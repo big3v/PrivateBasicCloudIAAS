@@ -32,7 +32,6 @@ def CSConfig2():
     print('vxs01 vm created ...')
     subprocess.check_output(['virsh define ./resources/vmgmts01.xml'], shell=True)
     print('vMgmtS01 vm created ...')
-    subprocess.check_output(['virsh start vXS01'], shell=True)
     subprocess.check_output(['virsh start vMgmtS01'], shell=True)
     time.sleep(30)
     mgmtip = '192.168.122.10'
@@ -50,6 +49,7 @@ def CSConfig2():
     print('Install Template Done')
     remote("service cloudstack-management start")
     remote("chkconfig cloudstack-management on")
+    subprocess.check_output(['virsh start vXS01'], shell=True)
 
 def CSConfig2_bak():
     print("Configuring CloudStack ...")
