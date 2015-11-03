@@ -12,22 +12,24 @@ import sys
 import commands
 import psutil
 import getpass
+import time
 
 def CSConfig1(xencpunum, xenmem):
     print("Configuring CloudStack ...")
     print('start downloading vxs01.qcow2 ...')
-    subprocess.check_output(['wget -q -T90 https://big3v.com/CSIAAS/vxs01.qcow2 -P /var/lib/libvirt/images'], shell=True)
+    subprocess.check_output(['wget https://big3v.com/CSIAAS/vxs01.qcow2 -P /var/lib/libvirt/images'], shell=True)
     print('vxs01.qcow2 downloaded')
-    subprocess.check_output(["wget -q -T90 https://big3v.com/CSIAAS/vxs01.xml -P ./resources"], shell=True)
+    subprocess.check_output(["wget https://big3v.com/CSIAAS/vxs01.xml -P ./resources"], shell=True)
     print('vxs01.xml downloaded')
     print('start downloading vMgmtS01.qcow2 ...')
-    subprocess.check_output(['wget -q -T90 https://big3v.com/CSIAAS/vMgmtS01.qcow2 -P /var/lib/libvirt/images'], shell=True)
+    subprocess.check_output(['wget https://big3v.com/CSIAAS/vMgmtS01.qcow2 -P /var/lib/libvirt/images'], shell=True)
     print('vMgmtS01.qcow2 downloaded')
-    subprocess.check_output(["wget -q -T90 https://big3v.com/CSIAAS/vmgmts01.xml -P ./resources"], shell=True)
+    subprocess.check_output(["wget https://big3v.com/CSIAAS/vmgmts01.xml -P ./resources"], shell=True)
     print('vmgmts01.xml downloaded')    
+    newxenmem = int(float(xenmem.strip())*1000 - 4096000)
     subprocess.check_output(['sed -i "/vcpu/s/>[^<]*</>' + str(xencpunum) + '</" ./resources/vxs01.xml'], shell=True)
-    subprocess.check_output(['sed -i "/currentMemory/s/>[^<]*</>' + str(xenmem) + '</" ./resources/vxs01.xml'], shell=True)
-    subprocess.check_output(['sed -i "/memory/s/>[^<]*</>' + str(xenmem) + '</" ./resources/vxs01.xml'], shell=True)  
+    subprocess.check_output(['sed -i "/currentMemory/s/>[^<]*</>' + str(newxenmem) + '</" ./resources/vxs01.xml'], shell=True)
+    subprocess.check_output(['sed -i "/memory/s/>[^<]*</>' + str(newxenmem) + '</" ./resources/vxs01.xml'], shell=True)  
 
 def PreReboot():
     file = open("/etc/profile.d/CSConfig.sh", "w")
@@ -35,7 +37,7 @@ def PreReboot():
     file.write('read -p "Press [Enter] key to continue CloudStack IAAS Setup ..."\n')
     file.write('workdir=' + str(os.path.dirname(os.path.abspath(__file__))) + '\n')
     file.write('cd $workdir\n')
-    file.write('python CSConfig.py')
+    file.write('python CSConfig.py\n')
     file.write('rm /etc/profile.d/CSConfig.sh')
     file.close()
 
@@ -119,17 +121,25 @@ def HostConfig():
     
 def InstallVPN():
     print('Installing VPN Server ...')
-    subprocess.check_output(["wget -q -T90 https://big3v.com/CSIAAS/softether-vpnserver-v4.18-9570-rtm-2015.07.26-linux-x64-64bit.tar.gz -P ./resources"], shell=True)
+    subprocess.check_output(["wget https://big3v.com/CSIAAS/softether-vpnserver-v4.18-9570-rtm-2015.07.26-linux-x64-64bit.tar.gz -P ./resources"], shell=True)
     subprocess.check_output(['tar xzvf  ./resources/softether-vpnserver-v4.18-9570-rtm-2015.07.26-linux-x64-64bit.tar.gz'], shell=True)
+    print('Installing VPN Server (getting stuff) ...')
     subprocess.check_output(['yum -y groupinstall "Development Tools" --setopt=group_package_types=mandatory,default,optional'], shell=True)
+    print('Installing VPN Server (making vpnserver) ...')
     subprocess.check_output(['printf "1\n1\n1\n" | make -C ./vpnserver'], shell=True)    
     subprocess.check_output(['mv ./vpnserver /usr/local'], shell=True)
+    print('Installing VPN Server (configuring vpnserver) ...')
     subprocess.check_output(['chmod 600 /usr/local/vpnserver/*'], shell=True)
     subprocess.check_output(['chmod 700 /usr/local/vpnserver/vpnserver'], shell=True)
     subprocess.check_output(['chmod 700 /usr/local/vpnserver/vpncmd'], shell=True)
     subprocess.check_output(['cp ./resources/vpnserver /etc/init.d'], shell=True)
     subprocess.check_output(['chmod 755 /etc/init.d/vpnserver'], shell=True)
-    subprocess.check_output(['mkdir /var/lock/subsys'], shell=True)
+    subprocess.check_output(['/etc/init.d/vpnserver start'], shell=True)
+    time.sleep(10)
+    try:
+        subprocess.check_output(['mkdir /var/lock/subsys'], shell=True)
+    except:
+        pass
     subprocess.check_output(['chkconfig --add vpnserver'], shell=True)
     subprocess.check_output(['/etc/init.d/vpnserver stop'], shell=True)
     subprocess.check_output(['rm -rvf /usr/local/vpnserver/backup.vpn_server.config*'], shell=True)
