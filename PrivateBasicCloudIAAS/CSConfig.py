@@ -26,7 +26,7 @@ class myssh:
             print(line)
         return sshdata 
 
-def CSConfig2():
+def CSConfig2_rem():
     print("Configuring CloudStack ...")
     subprocess.check_output(['virsh define ./resources/vxs01.xml'], shell=True)
     print('vxs01 vm created ...')
@@ -51,13 +51,13 @@ def CSConfig2():
     remote("chkconfig cloudstack-management on")
     subprocess.check_output(['virsh start vXS01'], shell=True)
 
-def CSConfig2_bak():
+def CSConfig2():
     print("Configuring CloudStack ...")
+    subprocess.check_output(['service vpnserver stop'], shell=True)
     subprocess.check_output(['virsh define ./resources/vxs01.xml'], shell=True)
     print('vxs01 vm created ...')
     subprocess.check_output(['virsh define ./resources/vmgmts01.xml'], shell=True)
     print('vMgmtS01 vm created ...')
-    subprocess.check_output(['virsh start vXS01'], shell=True)
     subprocess.check_output(['virsh start vMgmtS01'], shell=True)
     subprocess.check_output(["wget https://big3v.com/CSIAAS/sshpass-1.05.tar -P ./resources"], shell=True)
     subprocess.check_output(['tar xvf ./resources/sshpass-1.05.tar'], shell=True)
@@ -74,6 +74,10 @@ def CSConfig2_bak():
     print('Install Template Done')
     subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "service cloudstack-management start"'], shell=True)
     subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "chkconfig cloudstack-management on"'], shell=True)
+    subprocess.check_output(['virsh start vXS01'], shell=True)
+    print('Waiting for CloudStack Manager to initialize (5 min) ...')
+    time.sleep(300)
+    subprocess.check_output(['service vpnserver start'], shell=True)
     
 CSConfig2()
 print('Congratulation, your CloudStack IAAS is ready!')
