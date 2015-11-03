@@ -14,7 +14,7 @@ def CSConfig2():
     print('vMgmtS01 vm created ...')
     subprocess.check_output(['virsh start vXS01'], shell=True)
     subprocess.check_output(['virsh start vMgmtS01'], shell=True)
-    subprocess.check_output(["wget -q -T90 https://big3v.com/CSIAAS/sshpass-1.05.tar -P ./resources"], shell=True)
+    subprocess.check_output(["wget https://big3v.com/CSIAAS/sshpass-1.05.tar -P ./resources"], shell=True)
     subprocess.check_output(['tar xvf ./resources/sshpass-1.05.tar'], shell=True)
     subprocess.check_output(['./sshpass-1.05/configure'], shell=True)
     subprocess.check_output(['make install install_root=./sshpass-1.05'], shell=True)

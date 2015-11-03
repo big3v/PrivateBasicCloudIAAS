@@ -26,7 +26,7 @@ def CSConfig1(xencpunum, xenmem):
     print('vMgmtS01.qcow2 downloaded')
     subprocess.check_output(["wget https://big3v.com/CSIAAS/vmgmts01.xml -P ./resources"], shell=True)
     print('vmgmts01.xml downloaded')    
-    newxenmem = int(float(xenmem.strip())*1000 - 4096000)
+    newxenmem = int(float(xenmem.strip()) - 4096000)
     subprocess.check_output(['sed -i "/vcpu/s/>[^<]*</>' + str(xencpunum) + '</" ./resources/vxs01.xml'], shell=True)
     subprocess.check_output(['sed -i "/currentMemory/s/>[^<]*</>' + str(newxenmem) + '</" ./resources/vxs01.xml'], shell=True)
     subprocess.check_output(['sed -i "/memory/s/>[^<]*</>' + str(newxenmem) + '</" ./resources/vxs01.xml'], shell=True)  
