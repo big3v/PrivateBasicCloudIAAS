@@ -45,8 +45,8 @@ def PreReboot():
 def SetNFS():
     print("Setting NFS Server ...")
     subprocess.check_output(['yum install nfs-utils'], shell=True)
-    file = open("/etc/sysconfig/nfs", "w")
-    file.write('LOCKD_TCPPORT=32803\n')
+    file = open("/etc/sysconfig/nfs", "a")
+    file.write('\nLOCKD_TCPPORT=32803\n')
     file.write('LOCKD_UDPPORT=32769\n')
     file.write('MOUNTD_PORT=892\n')
     file.write('RQUOTAD_PORT=875\n')
