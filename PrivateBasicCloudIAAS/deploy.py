@@ -58,7 +58,7 @@ def SetNFS():
 #    subprocess.check_output(['service nfs start'], shell=True)
     subprocess.check_output(['mkdir -p /export/primary'], shell=True)
     subprocess.check_output(['mkdir -p /export/secondary'], shell=True)
-    subprocess.check_output(["echo '/export  192.168.122.*(rw,async,no_root_squash,no_subtree_check)' > /etc/exports"], shell=True)
+    subprocess.check_output(["echo '/export  *(rw,async,no_root_squash,no_subtree_check)' > /etc/exports"], shell=True)
     subprocess.check_output(['exportfs -a'], shell=True)
     print('NFS Server Done!') 
 
@@ -71,7 +71,7 @@ def GetPassword(prompt):
         return str(pw1)
     else:
         print 'BAD: you provided different entries.'
-        GetPassword()
+        return GetPassword(prompt)
 
 def CheckHost():
     checkresult = ''
@@ -177,7 +177,7 @@ else:
 
 HostConfig()
 InstallVPN()
-SetNFS()
+# SetNFS()
 CSConfig1(resCheckHost[1], resCheckHost[2])
 PreReboot()
 raw_input("CloudStack IAAS configuration will continue after reboot. Press [Enter] to continue...")
