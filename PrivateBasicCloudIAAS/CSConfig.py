@@ -63,7 +63,7 @@ def CSConfig2():
     subprocess.check_output(['tar xvf ./resources/sshpass-1.05.tar'], shell=True)
     subprocess.check_output(['./sshpass-1.05/configure'], shell=True)
     subprocess.check_output(['make install install_root=./sshpass-1.05'], shell=True)
-    time.sleep(30)
+    time.sleep(60)
     subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "mount -t nfs 192.168.122.1:/export/secondary /mnt/secondary"'], shell=True)
     print('cloudstack-setup-databases Start')
     subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "cloudstack-setup-databases cloud:Fa26Lio5@localhost --deploy-as=root:Fa26Lio5 -i 192.168.122.10"'], shell=True)
