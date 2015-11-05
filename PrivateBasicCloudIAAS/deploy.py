@@ -44,15 +44,15 @@ def PreReboot():
 
 def SetNFS():
     print("Setting NFS Server ...")
-    subprocess.check_output(['yum install nfs-utils'], shell=True)
-#     file = open("/etc/sysconfig/nfs", "a")
-#     file.write('\nLOCKD_TCPPORT=32803\n')
-#     file.write('LOCKD_UDPPORT=32769\n')
-#     file.write('MOUNTD_PORT=892\n')
-#     file.write('RQUOTAD_PORT=875\n')
-#     file.write('STATD_PORT=662\n')
-#     file.write('STATD_OUTGOING_PORT=2020')
-#     file.close()    
+    file = open("/etc/sysconfig/nfs", "a")
+    file.write('\nLOCKD_TCPPORT=32803\n')
+    file.write('LOCKD_UDPPORT=32769\n')
+    file.write('MOUNTD_PORT=892\n')
+    file.write('RQUOTAD_PORT=875\n')
+    file.write('STATD_PORT=662\n')
+    file.write('STATD_OUTGOING_PORT=2020')
+    file.close()    
+    subprocess.check_output(["""echo "RPCNFSDARGS='--no-nfs-version 4'" >> /etc/sysconfig/nfs"""], shell=True)
     subprocess.check_output(['systemctl enable nfs-server.service'], shell=True)
     subprocess.check_output(['systemctl enable rpcbind.service'], shell=True)
     subprocess.check_output(['service rpcbind start'], shell=True)
@@ -60,6 +60,7 @@ def SetNFS():
     subprocess.check_output(['mkdir -p /export/primary'], shell=True)
     subprocess.check_output(['mkdir -p /export/secondary'], shell=True)
     subprocess.check_output(["echo '/export  *(rw,async,no_root_squash,no_subtree_check)' > /etc/exports"], shell=True)
+    
     subprocess.check_output(['exportfs -a'], shell=True)
     print('NFS Server Done!') 
 
