@@ -65,6 +65,7 @@ def CSConfig2():
     subprocess.call(['make install install_root=./sshpass-1.05'], shell=True)
     subprocess.call(['service nfs restart'], shell=True)
     subprocess.call(['service rpcbind restart'], shell=True)
+    print('Waiting for CloudStack Manager to start (1 min) ...')
     time.sleep(60)
     subprocess.call(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "mount -t nfs 192.168.122.1:/export/secondary /mnt/secondary"'], shell=True)
     print('cloudstack-setup-databases Start')

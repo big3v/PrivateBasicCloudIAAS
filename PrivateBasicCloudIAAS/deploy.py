@@ -109,7 +109,7 @@ def CheckHost():
     else:
         checkresult = checkresult + "\n" + "Disk Check:  OK"
     
-    vtsupport = len(subprocess.call(['cat /proc/cpuinfo| egrep "vmx|svm"'], shell=True))
+    vtsupport = len(subprocess.check_output(['cat /proc/cpuinfo| egrep "vmx|svm"'], shell=True))
     if vtsupport == 0:
         checkresult = checkresult + "\n" + "Virtualization Support Check: NOK (Your system does not support virtualization)"
         checkbool = False
