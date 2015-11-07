@@ -60,8 +60,9 @@ def SetNFS():
     subprocess.check_output(['mkdir -p /export/primary'], shell=True)
     subprocess.check_output(['mkdir -p /export/secondary'], shell=True)
     subprocess.check_output(["echo '/export  *(rw,async,no_root_squash,no_subtree_check)' > /etc/exports"], shell=True)
-    
     subprocess.check_output(['exportfs -a'], shell=True)
+    subprocess.check_output(['chkconfig nfs-server on'], shell=True)
+    subprocess.check_output(['chkconfig rpcbind on'], shell=True)
     print('NFS Server Done!') 
 
 def GetPassword(prompt):
