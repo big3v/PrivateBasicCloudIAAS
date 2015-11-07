@@ -72,7 +72,7 @@ def CSConfig2():
     print('cloudstack-setup-databases Done')
     subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "cloudstack-setup-management"'], shell=True)
     print('Install Template Start')
-    subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt -m /mnt/secondary -u http://big3v.com/img/vmgmts01/systemvm64template-4.5-xen.vhd.bz2 -h xenserver -F"  > /dev/null 2>&1 & '], shell=True)
+    subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt -m /mnt/secondary -u https://big3v.com/CSIAAS/systemvm64template-4.5-xen.vhd.bz2 -h xenserver -F"  > /dev/null 2>&1 & '], shell=True)
     print('Install Template Done')
     subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "service cloudstack-management start"'], shell=True)
     subprocess.check_output(['sshpass -p "Fa26Lio5" ssh -o StrictHostKeyChecking=no root@192.168.122.10 "chkconfig cloudstack-management on"'], shell=True)
