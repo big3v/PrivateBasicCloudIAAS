@@ -6,6 +6,7 @@ LOCK=/var/lock/subsys/vpnserver
 test -x $DAEMON || exit 0
 case "$1" in
 start)
+service nfs start
 $DAEMON start
 touch $LOCK
 ;;
