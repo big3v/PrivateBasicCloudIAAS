@@ -19,7 +19,7 @@ def CSConfig1(xencpunum, xenmem):
 #    print("Configuring CloudStack ...")
     print('Start downloading disk images (~3G, please be patient) ...')
     subprocess.call(['wget ' + stuffurl + 'qcows.tar.gz -P ./resources'], shell=True)
-    subprocess.call(['tar xvzf ./resources/qcows.tar.gz -C /var/lib/libvirt/images --strip-components 1'], shell=True)
+    subprocess.call(['tar xvzf ./resources/qcows.tar.gz -C /var/lib/libvirt/images --strip 2'], shell=True)
     print('Disk images downloaded')
     subprocess.call(['wget ' + stuffurl + 'vxs01.xml -P ./resources'], shell=True)
     print('vxs01.xml downloaded')
