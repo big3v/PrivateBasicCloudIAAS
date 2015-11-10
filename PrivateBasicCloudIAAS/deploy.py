@@ -167,8 +167,8 @@ else:
     sys.exit(1)
 
 HostConfig()
-InstallVPN()
 SetNFS()
+InstallVPN()
 CSConfig1(resCheckHost[1], resCheckHost[2])
 PreReboot()
 raw_input("CloudStack IAAS configuration will continue after reboot. Press [Enter] to continue...")

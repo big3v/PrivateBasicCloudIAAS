@@ -22,7 +22,7 @@ def CSConfig2():
     subprocess.call(['virsh autostart vMgmtS01'], shell=True)
     subprocess.call(['virsh autostart vXS01'], shell=True)
     subprocess.call(['service vpnserver start'], shell=True)
-    subprocess.call(['rm -rvf PrivateBasicCloudIAAS'], shell=True)
+    subprocess.call(['rm -rvf ~/PrivateBasicCloudIAAS'], shell=True)
     
 CSConfig2()
 print('Congratulation, your CloudStack IAAS is ready!')
