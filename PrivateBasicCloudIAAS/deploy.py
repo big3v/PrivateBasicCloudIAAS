@@ -145,9 +145,9 @@ def InstallVPN():
     subprocess.call(['rm -rvf /usr/local/vpnserver/backup.vpn_server.config*'], shell=True)
     subprocess.call(["sed -i 's/bool Disabled false/bool Disabled true/g' /usr/local/vpnserver/vpn_server.config"], shell=True)
     subprocess.call(['service vpnserver restart'], shell=True)
-    vpnserverpwd = GetPassword("Enter VPN Server Password:")
-    vpnuserpwd = GetPassword("Enter VPN User Password:")    
-    vpnpsk = GetPassword("Enter VPN Preshared Key:")    
+#     vpnserverpwd = GetPassword("Enter VPN Server Password:")
+#     vpnuserpwd = GetPassword("Enter VPN User Password:")    
+#     vpnpsk = GetPassword("Enter VPN Preshared Key:")    
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /adminhub:DEFAULT /cmd ServerPasswordSet ' + vpnserverpwd], shell=True)
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd SecureNatEnable'], shell=True)
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd UserCreate vpnuser01 /GROUP:none /REALNAME:none /NOTE:none'], shell=True)
@@ -158,6 +158,9 @@ def InstallVPN():
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd DhcpSet /START:192.168.30.10 /END:192.168.30.200 /MASK:255.255.255.0 /EXPIRE:7200 /GW:none /GATEWAY:192.168.1.30 /DNS:8.8.8.8 /DNS2:8.8.4.4 /DOMAIN:none /LOG:yes'], shell=True)
     print('VPN Server Installed.')
 
+vpnserverpwd = GetPassword("Set VPN Server Password:")
+vpnuserpwd = GetPassword("Set VPN User Password:")    
+vpnpsk = GetPassword("Set VPN Preshared Key:") 
 print("Checking prerequisites ...")
 resCheckHost = CheckHost() 
 if resCheckHost[0]:
