@@ -50,7 +50,6 @@ def SetNFS():
     file.write('STATD_OUTGOING_PORT=2020')
     file.close()    
     subprocess.call(["""echo "\nRPCNFSDARGS='--no-nfs-version 4'" >> /etc/sysconfig/nfs"""], shell=True)
-    subprocess.call(['service nfs start'], shell=True)
     subprocess.call(['wget ' + stuffurl + 'export.tar.gz -P ./resources'], shell=True)
     subprocess.call(['tar xvzf ./resources/export.tar.gz -C /'], shell=True)
     subprocess.call(["echo '/export  192.168.122.*(rw,async,no_root_squash,no_subtree_check)' > /etc/exports"], shell=True)
@@ -152,7 +151,7 @@ def InstallVPN():
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd IPsecEnable /L2TP:yes /L2TPRAW:yes /ETHERIP:yes /PSK:' + vpnpsk + ' /DEFAULTHUB:DEFAULT'], shell=True)
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /cmd BridgeCreate DEFAULT /DEVICE:virbr0'], shell=True)
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd SecureNatHostSet /MAC:none /IP:192.168.30.1 /MASK:255.255.255.0'], shell=True)
-    subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd DhcpSet /START:192.168.30.10 /END:192.168.30.200 /MASK:255.255.255.0 /EXPIRE:7200 /GW:none /GATEWAY:192.168.1.30 /DNS:8.8.8.8 /DNS2:8.8.4.4 /DOMAIN:none /LOG:yes'], shell=True)
+    subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd DhcpSet /START:192.168.30.10 /END:192.168.30.200 /MASK:255.255.255.0 /EXPIRE:7200 /GW:none /DNS:8.8.8.8 /DNS2:8.8.4.4 /DOMAIN:none /LOG:yes'], shell=True)
     print('VPN Server Installed.')
 
 vpnserverpwd = GetPassword("Set VPN Server Password:")
