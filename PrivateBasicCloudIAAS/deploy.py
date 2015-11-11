@@ -151,7 +151,7 @@ def InstallVPN():
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd IPsecEnable /L2TP:yes /L2TPRAW:yes /ETHERIP:yes /PSK:' + vpnpsk + ' /DEFAULTHUB:DEFAULT'], shell=True)
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /cmd BridgeCreate DEFAULT /DEVICE:virbr0'], shell=True)
     subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd SecureNatHostSet /MAC:none /IP:192.168.30.1 /MASK:255.255.255.0'], shell=True)
-    subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd DhcpSet /START:192.168.30.10 /END:192.168.30.200 /MASK:255.255.255.0 /EXPIRE:7200 /GW:none /DNS:8.8.8.8 /DNS2:8.8.4.4 /DOMAIN:none /LOG:yes'], shell=True)
+    subprocess.call(['/usr/local/vpnserver/vpncmd /server localhost /password:' + vpnserverpwd + ' /adminhub:DEFAULT /cmd DhcpSet /START:192.168.30.10 /END:192.168.30.200 /MASK:255.255.255.0 /EXPIRE:7200 /GW:192.168.30.1 /DNS:8.8.8.8 /DNS2:8.8.4.4 /DOMAIN:none /LOG:yes'], shell=True)
     print('VPN Server Installed.')
 
 vpnserverpwd = GetPassword("Set VPN Server Password:")
